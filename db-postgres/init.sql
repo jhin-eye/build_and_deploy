@@ -53,14 +53,7 @@ CREATE TABLE board (
 	CONSTRAINT board_pkey PRIMARY KEY (board_id)
 );
 
-CREATE TABLE error_log (
-	error_log_id bigserial NOT NULL,
-	topic varchar(255) NOT NULL,
-	log text NULL,
-	occurrence_time timestamptz NULL,
-	checked boolean not null default false,
-	CONSTRAINT error_log_pkey PRIMARY KEY (error_log_id)
-);
+
 
 -- map_member_board definition
 
