@@ -56,9 +56,9 @@ CREATE TABLE board (
 CREATE TABLE error_log (
 	error_log_id bigserial NOT NULL,
 	topic varchar(255) NOT NULL,
-	topic2 varchar(255) NULL,
 	log text NULL,
 	occurrence_time timestamptz NULL,
+	checked boolean not null default false,
 	CONSTRAINT error_log_pkey PRIMARY KEY (error_log_id)
 );
 
@@ -193,6 +193,15 @@ CREATE TABLE "event" (
 	CONSTRAINT event_pkey PRIMARY KEY (event_id)
 );
 
+CREATE TABLE error_log (
+	error_log_id bigserial NOT NULL,
+	topic varchar(255) NOT NULL,
+	topic2 varchar(255) NULL,
+	log text NULL,
+	occurrence_time timestamptz NULL,
+	checked boolean not null default false,
+	CONSTRAINT error_log_pkey PRIMARY KEY (error_log_id)
+);
 
 INSERT INTO board_type
 (board_type_name, board_type_description)
