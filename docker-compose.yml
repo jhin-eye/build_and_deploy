@@ -108,6 +108,7 @@ services:
       - redis-server
     environment:
       - SPRING_PROFILE_ACTIVE=prod
+      - SERVER_URL=${SERVER_URL}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
       - KAKAO_CLIENT_ID=${KAKAO_CLIENT_ID}
       - KAKAO_CLIENT_SECRET=${KAKAO_CLIENT_SECRET}
