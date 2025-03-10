@@ -42,6 +42,7 @@ services:
 
 
   crawler_core:
+    stop_grace_period: 30s
     build: ./crawler_core
     ports:
       - "9080:8080"
