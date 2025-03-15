@@ -141,7 +141,7 @@ services:
       - kafka
       - redis-server
       - telegram-bot
-      - member
+      - jhineye-member
       - crawler_core
     environment:
       - SPRING_PROFILE_ACTIVE=prod
