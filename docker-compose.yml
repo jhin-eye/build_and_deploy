@@ -168,4 +168,5 @@ volumes:
   db-postgres-data:
 networks:
   proxy-network:
+    external: true
     driver: bridge
