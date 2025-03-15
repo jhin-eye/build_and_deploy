@@ -70,7 +70,7 @@ services:
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
       
-  member:
+  jhineye-member:
     build: ./member
     ports:
       - "9081:8080"
@@ -97,6 +97,8 @@ services:
     volumes:
       - db-postgres-data:/var/lib/postgresql/data
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - proxy-network  # 리버스 프록시와 같은 네트워크에 추가
     restart: always
       
   telegram-bot:
@@ -164,3 +166,6 @@ services:
 
 volumes:
   db-postgres-data:
+networks:
+  proxy-network:
+    driver: bridge
