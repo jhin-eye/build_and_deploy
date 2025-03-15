@@ -5,6 +5,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2182
       ZOOKEEPER_TICK_TIME: 2000
     restart: always
+    networks:
+      - internal-network
 
 
   kafka:
@@ -18,11 +20,15 @@ services:
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     restart: always
+    networks:
+      - internal-network
 
   redis-server:
     image: redis:latest
     command: ["redis-server", "--appendonly", "yes"]
     restart: always
+    networks:
+      - internal-network
 
 
   db-postgres:
@@ -38,6 +44,8 @@ services:
       - db-postgres-data:/var/lib/postgresql/data
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
+    networks:
+      - internal-network
 
 
 
@@ -69,6 +77,8 @@ services:
       - db-postgres-data:/var/lib/postgresql/data
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
+    networks:
+      - internal-network
       
   jhineye-member:
     build: ./member
@@ -98,7 +108,8 @@ services:
       - db-postgres-data:/var/lib/postgresql/data
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
-      - proxy-network  # 리버스 프록시와 같은 네트워크에 추가
+      - internal-network   # 내부 서비스와의 통신
+      - proxy-network      # 외부 리버스 프록시 접근을 위해 필요
     restart: always
       
   telegram-bot:
@@ -131,6 +142,8 @@ services:
       - db-postgres-data:/var/lib/postgresql/data
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
+    networks:
+      - internal-network
 
   message_publisher:
     build: ./message_publisher
@@ -163,10 +176,14 @@ services:
       - db-postgres-data:/var/lib/postgresql/data
       - ./db-postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: always
+    networks:
+      - internal-network
 
 volumes:
   db-postgres-data:
 networks:
+  internal-network:
+    driver: bridge
   proxy-network:
     external: true
     driver: bridge
