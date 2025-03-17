@@ -52,8 +52,8 @@ services:
   crawler_core:
     stop_grace_period: 30s
     build: ./crawler_core
-    ports:
-      - "9080:8080"
+    expose:
+      - 8080
     depends_on:
       - db-postgres
       - kafka
@@ -82,8 +82,8 @@ services:
       
   jhineye-member:
     build: ./member
-    ports:
-      - "9081:8080"
+    expose:
+      - 8080
     depends_on:
       - db-postgres
       - kafka
@@ -114,8 +114,8 @@ services:
       
   telegram-bot:
     build: ./telegram-bot
-    ports:
-      - "9082:8080"
+    expose:
+      - 8080
     depends_on:
       - db-postgres
       - kafka
@@ -147,8 +147,8 @@ services:
 
   message_publisher:
     build: ./message_publisher
-    ports:
-      - "9083:8080"
+    expose:
+      - 8080
     depends_on:
       - db-postgres
       - kafka
