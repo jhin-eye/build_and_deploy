@@ -7,6 +7,9 @@ services:
     restart: always
     networks:
       - internal-network
+    volumes:
+      - zookeeper-data:/var/lib/zookeeper/data
+      - zookeeper-log:/var/lib/zookeeper/log
 
 
   kafka:
@@ -22,6 +25,8 @@ services:
     restart: always
     networks:
       - internal-network
+    volumes:
+      - kafka-data:/var/lib/kafka/data
 
   redis-server:
     image: redis:latest
@@ -181,6 +186,9 @@ services:
 
 volumes:
   db-postgres-data:
+  kafka-data:
+  zookeeper-data:
+  zookeeper-log:
 networks:
   internal-network:
     driver: bridge
