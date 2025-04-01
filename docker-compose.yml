@@ -14,35 +14,21 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:latest
-    ports:
-      - "9092:9092"
+    depends_on:
+      - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2182
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: 720  # 30일
+    restart: always
     networks:
-      - kafka-net
+      - internal-network
     volumes:
       - kafka-data:/var/lib/kafka/data
 
-  init-kafka:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - kafka
-    entrypoint: [ "/bin/sh", "-c" ]
-    command: >
-      "
-      sleep 10 &&
-      kafka-topics.sh --create --if-not-exists --bootstrap-server kafka:9092 \
-        --replication-factor 1 --partitions 1 --topic FIND_KEYWORD_POST \
-        --config retention.ms=2592000000 \
-        --config retention.bytes=1073741824
-      "
-    networks:
-      - kafka-net
-      
   redis-server:
     image: redis:latest
     command: ["redis-server", "--appendonly", "yes"]
@@ -209,6 +195,4 @@ networks:
     driver: bridge
   proxy-network:
     external: true
-    driver: bridge
-  kafka-net:
     driver: bridge
